@@ -10,11 +10,10 @@
 <body>
     <div class="wrapper">
         <div class="banner">
-            <h1>HiChat :)</h1>
             <span id="status"></span>
         </div>
-        <div id="historyMsg">
-        </div>
+        <ul id="historyMsg">
+        </ul>
         <div class="controls" >
             <div class="items">
                 <input id="colorStyle" type="color" placeHolder='#000' title="font color" />
@@ -24,15 +23,15 @@
                     <input id="sendImage" type="file" value="image"/>
                 </label>
             </div>
-            <textarea id="messageInput" placeHolder="enter to send"></textarea>
+            <input type="text" id="messageInput" placeHolder="enter to send" />
             <div id="emojiWrapper">
             </div>
         </div>
     </div>
     <div id="loginWrapper">
-        <p id="info">connecting to server...</p>
         <div id="nickWrapper">
-            <input type="text" placeHolder="nickname" id="nicknameInput" />
+            <input type="text" placeHolder="起个名字吧" id="nicknameInput" />
+            <p id="error"></p>
         </div>
     </div>
 

@@ -15,12 +15,11 @@ highChat.prototype = {
         that = this;
         this.socket = io.connect();
         this.socket.on('connect',function(){
-            $('info').textContent = '输入昵称';
             $('nickWrapper').style.display = 'block';
             $('nicknameInput').focus()
         })
         this.socket.on('nicked',function(){
-            $('info').textContent = '选择另外一个昵称吧!';
+            $('error').textContent = '选择另外一个昵称吧!';
         })
         this.socket.on('loginSuccess',function(){
             document.title = 'highchat| ' + $('nicknameInput').value;
@@ -28,25 +27,25 @@ highChat.prototype = {
             $('messageInput').focus();
         })
         this.socket.on('system',function(nickName,userCount,type){
-            var msg = nickName + (type == 'login' ? 'joined' : 'left');
-            that.displayNewMsg('system',msg,'red');
+            var msg = nickName + (type == 'login' ? '  加入' : '   离开');
+            that.displayMsg('系统提示',msg,'red');
             $('status').textContent = userCount + (userCount > 1 ? 'users' : 'user') + 'online';
         })
         this.socket.on('newMsg',function(user,msg,color){
-            that.displayNewMsg(user,msg,color)
+            that.displayMsg(user,msg,color)
         })
 
         this.socket.on('newImg',function(user,img){
-            that.displayImage(user,img);
+            that.displayMsg(user,img);
         })
 
         $('emoji').addEventListener('click',function(e){
             e.stopPropagation();
             var emojiwrapper = $('emojiWrapper');
             emojiwrapper.style.display = 'block';
-
         },false);
         document.body.addEventListener('click',function(e){
+            e.stopPropagation();
             var emojiwrapper = $('emojiWrapper');
             if(e.target != emojiwrapper){
                 emojiwrapper.style.display = 'none';
@@ -67,14 +66,14 @@ highChat.prototype = {
                 var file = this.files[0];
                 reader = new FileReader();
                 if(!reader){
-                    that.displayNewMsg('system','你的浏览器暂不支持fileReader', 'red');
+                    that.displayMsg('系统提示','你的浏览器暂不支持fileReader', 'red');
                     this.value = '';
                     return;
                 }
                 reader.addEventListener('load',function(){
                     this.value = '';
                     that.socket.emit('img',reader.result);
-                    that.displayImage('me',reader.result);
+                    that.displayMsg('me',reader.result);
                 });
                 file ,reader.readAsDataURL(file);
             }
@@ -107,23 +106,18 @@ highChat.prototype = {
         }
         return result;
     },
-    displayImage:function(user,imgData,color){
+    displayMsg:function(user,data,color){
         var container = $('historyMsg');
-        var msgToDisplay = document.createElement('p');
+        var msgToDisplay = document.createElement('li');
         var date = new Date().toTimeString().substr(0,8);
+        if(/emoji/g.test(data)){
+            data = this.showEmoji(data);
+        }
+        msgToDisplay.innerHTML = user + '<span class="timespan">' + date + '</span>:' +data  
+        if(/base64/g.test(data)){
+            msgToDisplay.innerHTML = user + '<span class="timespan">' + date + '</span> <br/>' + '<a href=' + data + ' target="_blank"><img src=' + data+ ' /></a>';
+        }
         msgToDisplay.style.color = color || '#000';
-        msgToDisplay.innerHTML = user + '<span class="timespan">(' + date + '): </span> <br/>' + '<a href=' + imgData + ' target="_blank"><img src=' + imgData + ' /></a>';
-        container.appendChild(msgToDisplay);
-        container.scrollTop = container.scrollHeight;
-
-    },
-    displayNewMsg:function(user,msg,color){
-        var container = $('historyMsg'),
-            msgToDisplay = document.createElement('p'),
-            date = new Date().toTimeString().substr(0,8);
-            msg = this.showEmoji(msg);
-        msgToDisplay.style.color = color || '#000';
-        msgToDisplay.innerHTML = user + '<span class="timespan">(</span>' + date + '):' + msg
         container.appendChild(msgToDisplay);
         container.scrollTop = container.scrollHeight;
     }
@@ -153,7 +147,7 @@ $('messageInput').addEventListener('keyup',function(e){
         $('messageInput').focus();
         if(msg.trim().length != 0){
             that.socket.emit('postMsg',msg,color)
-            that.displayNewMsg('me',msg,color);
+            that.displayMsg('我',msg,color);
         } 
     } 
 },false)

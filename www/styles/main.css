@@ -6,11 +6,9 @@ body {
 
 }
 .wrapper {
-    width: 500px;
+    max-width: 960px;
     height: 640px;
-    padding: 5px;
     margin: 0 auto;
-    background-color: #ddd;
 
 }
 #loginWrapper {
@@ -28,7 +26,11 @@ body {
 }
 #nickWrapper {
     display: none;
-
+}
+#nickWrapper input{
+    width:800px;
+    font-size:14px;
+    padding:10px;
 }
 .banner {
     height: 80px;
@@ -51,7 +53,11 @@ body {
     background-color: #fff;
     overflow: auto;
     padding: 2px;
-
+}
+#historyMsg li{
+    line-height:30px;
+    padding:0 10px;
+    overflow:hidden;
 }
 #historyMsg img {
     max-width: 99%;
@@ -59,7 +65,8 @@ body {
 }
 .timespan {
     color: #ddd;
-
+    float:right;
+    font-size:12px;
 }
 .items {
     height: 30px;
@@ -88,11 +95,10 @@ body {
 /*end custom file input*/
 
 #messageInput {
-    width: 440px;
-    max-width: 440px;
-    height: 90px;
-    max-height: 90px;
-
+    width: 100%;
+    font-size:14px;
+    height:40px;
+    padding:0 10px;
 }
 #sendBtn {
     width: 50px;
