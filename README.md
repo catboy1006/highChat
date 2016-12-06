@@ -6,17 +6,16 @@
 ### 安装
 ```
 克隆项目到本地
-git clone https://github.com/catboy1006/angular-pagination.git
+git clone git@github.com:catboy1006/highChat.git
 
-要跑demo环境要求
-node , bower , npm , gulp
 
 安装
-npm install && bower install
+npm install express && socket.io 
 
 运行
-gulp serve
+node serve
 
+在浏览器打开[http://localhost:8000](http://localhost:8000)
 ```
 
 
