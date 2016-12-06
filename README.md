@@ -15,7 +15,7 @@ npm install express && socket.io
 运行
 node serve
 
-在浏览器打开[http://localhost:8000](http://localhost:8000)
+在浏览器打开http://localhost:8000
 ```
 
 
