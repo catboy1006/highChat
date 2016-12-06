@@ -9,7 +9,7 @@ var express = require('express'),
     users = [];
     app.use('/',express.static(__dirname + '/www'))
 
-    //监听80端口
+    //监听8000端口
     server.listen(8000);
 
     //socket connect
